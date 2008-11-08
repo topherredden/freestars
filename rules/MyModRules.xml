@@ -733,7 +733,7 @@
 				<Number>1</Number>
 			</Slot>
 			<Slot>
-				<Component>Transport Cloak</Component>
+				<Component>Transport Cloaking</Component>
 				<Number>1</Number>
 			</Slot>
 		</ShipDesign>
