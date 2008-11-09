@@ -62,50 +62,6 @@ double Race::RadDamage(HabType ht) const
 	}
 }
 
-#ifdef DEAD
-double Race::HabFactor(HabType ht, long tick) const	// gives how habitable this is abs(tick - midpoint)/width or negative if outside range
-{
-	if (ht < 0 && ht >= Rules::MaxHabType)
-		return 0;
-	else if (mHabWidth[ht] == -1)	// immune
-		return 1;
-	else if (tick < mHabCenter[ht] - mHabWidth[ht])	// too low
-		return max(-Rules::GetConstant("MaxNegativeHab", 15), tick - (mHabCenter[ht] - mHabWidth[ht]));
-	else if (tick > mHabCenter[ht] + mHabWidth[ht])	// too high
-		return max(-Rules::GetConstant("MaxNegativeHab", 15), (mHabCenter[ht] + mHabWidth[ht]) - tick);
-	else
-		return 1.0 - double(abs(tick - mHabCenter[ht])) / double(mHabWidth[ht]);
-}
-
-long Race::HabFactor(const Planet * p) const	// gives how habitable this planet is
-{
-	double Result = 0;
-	double LowMultiplier = 1;
-	HabType ht;
-	for (ht = 0; ht < Rules::MaxHabType; ++ht) {
-		double temp = HabFactor(ht, p->GetHabValue(ht));
-		if (temp < 0 && Result < 0)
-			Result += temp;
-		else if (temp < 0 && Result >= 0)
-			Result = temp;
-		else if (temp >= 0 && Result >= 0) {
-			Result = Result + temp * temp;
-		} /* else do nothing */
-
-		if (temp < .5)
-			LowMultiplier *= temp + 0.5;
-	}
-
-	if (Result < 0)
-		return long(Result - .5);
-
-	Result = sqrt(Result / Rules::MaxHabType);
-	Result *= LowMultiplier;
-
-	return long(Result * 100 + .5);
-}
-#endif DEAD
-
 long Race::HabFactor(const Planet * p) const	// gives how habitable this planet is
 {
 	long planetValuePoints = 0,redValue = 0,ideality = 10000;
@@ -312,7 +268,7 @@ long Race::GetAdvantagePoints() const
 		points += tmpPoints;
 	} else
 		points += 210; // AR
-	
+
 	points -= PointCost();	// cost for PRT, all LRTs, and racial trait interactions
 
 	// too many LRTs
@@ -552,7 +508,7 @@ bool Race::ParseNode(const TiXmlNode * node, bool other)
 				}
 				mHabWidth[i] = GetLong(child2->FirstChild("Width"));
 				if ((mHabCenter[i] == -1 && mHabWidth[i] != -1) ||
-					(mHabCenter[i] != -1 && mHabWidth[i] == -1) || 
+					(mHabCenter[i] != -1 && mHabWidth[i] == -1) ||
 					(mHabWidth[i] > mHabCenter[i] || mHabWidth[i] > 100 - mHabCenter[i]))
 				{
 					Message * mess = TheGame->AddMessage("Error: Invalid racial setting");
@@ -782,7 +738,7 @@ void Race::WriteNode(TiXmlNode * node) const
 	AddString(node, "SingularName", mSingularName.c_str());
 	AddString(node, "PluralName", mPluralName.c_str());
 	AddString(node, "PrimaryRacialTrait", mPRT->Name().c_str());
-	
+
 	deque<const RacialTrait *>::const_iterator rti;
 	for (rti = mLRTs.begin(); rti != mLRTs.end(); ++rti) {
 		if (!(*rti)->Name().empty())
