@@ -144,7 +144,7 @@ long Race::GetAdvantagePoints() const
 	hab = GetHabPoints() / 2000;
 
 	long grRateFactor, grRate;
-	grRateFactor = long(mGrowthRate * 100.0);	// use raw growth rate, otherwise HEs pay for GR at 2x
+	grRateFactor = long(mGrowthRate * 100.0 + 0.5);	// use raw growth rate, otherwise HEs pay for GR at 2x
 	grRate = grRateFactor;
 	if (grRateFactor <= 5)
 		points += (6 - grRateFactor) * 4200;
