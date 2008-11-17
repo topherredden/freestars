@@ -634,13 +634,13 @@ bool Race::ParseNode(const TiXmlNode * node, bool other)
 				mess->AddLong("StartFactories", mLeftoverPoints);
 				return false;
 			}
-		} else if (stricmp(child1->Value(), "StartDefneses") == 0) {
+		} else if (stricmp(child1->Value(), "StartDefenses") == 0) {
 			mLeftoverBuys = LOPB_DEFENSES;
 			mLeftoverPoints = GetLong(child1);
 			if (mLeftoverPoints < 0 || mLeftoverPoints > 50) {//magic number
 				Message * mess = TheGame->AddMessage("Error: Invalid racial setting");
 				mess->AddItem("Race", mSingularName);
-				mess->AddLong("StartDefneses", mLeftoverPoints);
+				mess->AddLong("StartDefenses", mLeftoverPoints);
 				return false;
 			}
 		} else if (stricmp(child1->Value(), "RaceEmblem") == 0) {
@@ -783,7 +783,7 @@ void Race::WriteNode(TiXmlNode * node) const
 			AddLong(node, "StartFactories", mLeftoverPoints);
 			break;
 		case LOPB_DEFENSES:
-			AddLong(node, "StartDefneses", mLeftoverPoints);
+			AddLong(node, "StartDefenses", mLeftoverPoints);
 			break;
 		}
 	}

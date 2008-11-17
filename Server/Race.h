@@ -172,7 +172,7 @@ public:
 	long GetStartConcentrations() const		{ return mLeftoverBuys == LOPB_CONCENTRATIONS ? mLeftoverPoints : 0; }
 	long GetStartMines() const				{ return mLeftoverBuys == LOPB_MINES ? mLeftoverPoints : 0; }
 	long GetStartFactories() const			{ return mLeftoverBuys == LOPB_FACTORIES ? mLeftoverPoints : 0; }
-	long GetStartDefneses() const			{ return mLeftoverBuys == LOPB_DEFENSES ? mLeftoverPoints : 0; }
+	long GetStartDefenses() const			{ return mLeftoverBuys == LOPB_DEFENSES ? mLeftoverPoints : 0; }
 
 	long GetAdvantagePoints() const;
 	long GetHabPoints() const;

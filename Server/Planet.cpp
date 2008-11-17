@@ -714,7 +714,7 @@ void Planet::AdjustFactories(long amount)
 	mDefenses += amount;
 	if (mMines < 0)
 		mMines = 0;
-	
+
 }
 
 long Planet::CanTerraform(const Component * comp) const
@@ -1069,7 +1069,7 @@ void Planet::AdjustHW(Player * player)
 
 	mMines += player->GetStartMines() / Rules::GetConstant("StartMineCost", 3);
 	mFactories += player->GetStartFactories() / Rules::GetConstant("StartFactoryCost", 5);
-	mDefenses += player->GetStartDefneses() / Rules::GetConstant("StartDefenseCost", 10);
+	mDefenses += player->GetStartDefenses() / Rules::GetConstant("StartDefenseCost", 10);
 
 	if (player->GetStartMinerals() > 0) {
 		long minSM = 0;
