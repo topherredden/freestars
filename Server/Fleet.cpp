@@ -109,11 +109,11 @@ void Fleet::ResetDefaults()
 	CVStealShip = -1;
 	CVStealPlanet = -1;
 	CVShoot = -1;
-	
+
 	CCalcNormalKillPercentage = false;
 	CVKillMin = CVKillInstallation = -1;
 	CVJumpGate = -1;
-	
+
 	CVNormalBomb = CVSmartBomb = CVTerraBomb = -1;
 
 	CVMineAmount.erase(CVMineAmount.begin(), CVMineAmount.end());
@@ -161,7 +161,11 @@ bool Fleet::ParseNode(const TiXmlNode * node, Player * player, bool other)
 		unsigned long c = GetLong(child1->FirstChild("ShipCount"));
 		a.SetCount(c);
 		unsigned long d = GetLong(child1->FirstChild("ShipDesign"));
-		a.SetDesign(player->GetShipDesign(d));
+		const Ship * s = player->GetShipDesign(d);
+		if (s == NULL) {
+			return false;
+		}
+		a.SetDesign(s);
 		mStacks.push_back(a);
 		mStacks.back().ParseNode(child1, player);
 		mStacks.back().SetFleetIn(this);
@@ -1111,7 +1115,7 @@ void Fleet::AdjustFuel(long amount)
 	mFuel += amount;
 	if (mFuel < 0)
 		mFuel = 0;
-	
+
 	if (mFuel > GetFuelCapacity())
 		mFuel = GetFuelCapacity();
 }
@@ -1241,7 +1245,7 @@ void Fleet::MergeTo(Fleet * to, const Ship * design, long number, long damaged)
 		damaged = stack->GetDamaged() + number - stack->GetCount();
 		mess->AddLong("Actual transfer", damaged);
 	}
-	
+
 	// original capacity of fleet
 	long original_capacity = GetCargoCapacity();
 
@@ -1254,7 +1258,7 @@ void Fleet::MergeTo(Fleet * to, const Ship * design, long number, long damaged)
 	double ratio = double(capacity)/double(original_capacity);
 	long amt;
 	if (capacity > 0)
-	{	
+	{
 		// Population
 		amt = GetContain(POPULATION);
 		if(amt != 0)
@@ -1262,11 +1266,11 @@ void Fleet::MergeTo(Fleet * to, const Ship * design, long number, long damaged)
 			// Only in Multiples of PopEQ1kT;
 			amt = long(amt * ratio) / Rules::PopEQ1kT;
 			amt *= Rules::PopEQ1kT;
-		
+
 			to->AdjustAmounts(POPULATION, amt);
 			AdjustAmounts(POPULATION, -amt);
 		}
-		
+
 		// Minerals
 		for (int i = 0; i < Rules::MaxMinType; ++i)
 		{
