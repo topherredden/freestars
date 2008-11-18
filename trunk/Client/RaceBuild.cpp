@@ -41,9 +41,9 @@ wxString tech_cost_Strings[] = {
 //}
 
 //i wanted gravity the values to begin differently... but so i got no algorithm ;)
-wxString hab_0_value[] = 
+wxString hab_0_value[] =
 {
-	//	0		1		2		3		4		5		6		7		8		9	
+	//	0		1		2		3		4		5		6		7		8		9
 	"0.08"	,"0.09"	,"0.10"	,"0.11"	,"0.12"	,"0.13"	,"0.14"	,"0.15"	,"0.16"	,"0.17"	//10
 	,"0.18"	,"0.19"	,"0.2"	,"0.21"	,"0.22"	,"0.23"	,"0.24"	,"0.25"	,"0.27"	,"0.29"	//20
 	,"0.31"	,"0.33"	,"0.36"	,"0.4"	,"0.44"	,"0.5"	,"0.51"	,"0.52"	,"0.53"	,"0.54"	//30
@@ -85,7 +85,7 @@ wxString RaceBuild::GetFullHabString(int hab) const
 	if (HabWidth(hab) == -1)
 		str << "N/A";
 	else
-		str << GetHabValueString(hab,HabCenter(hab)-HabWidth(hab)) 
+		str << GetHabValueString(hab,HabCenter(hab)-HabWidth(hab))
 			<< GetHabUnitString(hab)
 			<< " to "
 			<< GetHabValueString(hab,HabCenter(hab)+HabWidth(hab))
@@ -180,7 +180,7 @@ void RaceBuild::RemoveLRT(const FreeStars::RacialTrait * lrt)
 
 void RaceBuild::WriteRaceFile(const char*location)
 {
-	TiXmlDocument doc;	
+	TiXmlDocument doc;
 	doc.SetCondenseWhiteSpace(false);
 
 	TiXmlDeclaration decl("1.0", "", "yes");
@@ -229,9 +229,9 @@ void RaceBuild::WriteRaceFile(const char*location)
 	if (mStartAt)
 		AddString(RaceFile, "StartAt", "true");
 
-	if (mLeftoverPoints > 0) 
+	if (mLeftoverPoints > 0)
 	{
-		switch (mLeftoverBuys) 
+		switch (mLeftoverBuys)
 		{
 		case FreeStars::LOPB_MINERALS:
 			AddLong(RaceFile, "StartMinerals", mLeftoverPoints);
@@ -246,7 +246,7 @@ void RaceBuild::WriteRaceFile(const char*location)
 			AddLong(RaceFile, "StartFactories", mLeftoverPoints);
 			break;
 		case FreeStars::LOPB_DEFENSES:
-			AddLong(RaceFile, "StartDefneses", mLeftoverPoints);
+			AddLong(RaceFile, "StartDefenses", mLeftoverPoints);
 			break;
 		}
 	}
