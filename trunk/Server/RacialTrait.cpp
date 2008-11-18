@@ -313,7 +313,7 @@ RacialTrait * RacialTrait::ParseNode(const TiXmlNode * node, bool interaction /*
 		} else if (stricmp(child1->Value(), "PointCost") == 0) {
 			rt->mPointCost = GetLong(child1);
 		} else if (stricmp(child1->Value(), "ShipDesign") == 0) {
-			// Ship desgns are read after components are loaded, so skip for now
+			// Ship designs are read after components are loaded, so skip for now
 		} else if (stricmp(child1->Value(), "GroundAttackFactor") == 0) {
 			rt->mGroundAttackFactor = GetDouble(child1, 1.0);
 		} else if (stricmp(child1->Value(), "GroundDefenseFactor") == 0) {

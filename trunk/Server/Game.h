@@ -85,10 +85,10 @@ public:
 	void StoreMessageLocation(const Location * loc);
 
 	const Component * ParseComponent(const char * name) const;
-	const Component * GetBestComp(const Player * player, const char * ValueType, bool CheckRad) const;
-	const Component * GetBestComp(const Player * player, long vt, bool CheckRad) const;
+	const Component * GetBestComp(const Player * player, const char * ValueType, bool CheckRad, HullType hullType) const;
+	const Component * GetBestComp(const Player * player, long vt, bool CheckRad, HullType hullType) const;
 	const deque<Message *>& GetMessages() {return mMessages;}
-	
+
 //	enum FileLocation {
 //		AnyLocation = 1,
 //		GameDirOnly = 2,
