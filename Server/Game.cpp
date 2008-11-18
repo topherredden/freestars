@@ -1123,7 +1123,7 @@ void Game::UpdateLoadBy()
 		Fleet * fleet = dynamic_cast<Fleet *>(mTopObjects[i]->at(j));
 		if (fleet == NULL)
 			continue;
-		
+
 		pickpocket = fleet->CanStealShip();
 
 		// check everything here at the same location
@@ -1538,16 +1538,16 @@ const Component * Game::ParseComponent(const char * name) const
 	return NULL;
 }
 
-const Component * Game::GetBestComp(const Player * player, const char * ValueType, bool CheckRad) const
+const Component * Game::GetBestComp(const Player * player, const char * ValueType, bool CheckRad, HullType hullType) const
 {
 	long vt = Component::ParseSubType(ValueType, false);
 	if (vt < 0)
 		return NULL;
 	else
-		return GetBestComp(player, vt, CheckRad);
+		return GetBestComp(player, vt, CheckRad, hullType);
 }
 
-const Component * Game::GetBestComp(const Player * player, long vt, bool CheckRad) const
+const Component * Game::GetBestComp(const Player * player, long vt, bool CheckRad, HullType hullType) const
 {
 	long temp;
 	long Score = 0;
@@ -1560,6 +1560,9 @@ const Component * Game::GetBestComp(const Player * player, long vt, bool CheckRa
 			continue;
 
 		if (CheckRad && player->RadDamage((*iter)->GetRadiation()) > 0.0)
+			continue;
+
+		if (!((*iter)->GetHullType() & hullType))
 			continue;
 
 		temp = Component::GetScore(*iter, vt);

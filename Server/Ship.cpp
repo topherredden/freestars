@@ -406,7 +406,7 @@ void Ship::Upgrade(const Player * player)
 	const Component * best;
 	for (deque<Slot>::iterator i = mSlots.begin(); i != mSlots.end(); ++i) {
 		if (i->GetComp() != NULL) {
-			best = TheGame->GetBestComp(player, i->GetComp()->GetValueType(), (mHull->GetHullType() & HC_COL) != 0);
+			best = TheGame->GetBestComp(player, i->GetComp()->GetValueType(), (mHull->GetHullType() & HC_COL) != 0, mHull->GetHullType());
 			if (best != NULL)
 				i->SetComp(best);
 		}

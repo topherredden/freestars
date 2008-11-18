@@ -299,7 +299,7 @@ const Ship * Player::GetShipDesign(unsigned long n) const
 {
 	if (this == NULL || n <= 0 || n > mShipDesigns.size())
 		return NULL;
-	
+
 	return mShipDesigns[n-1];
 }
 
@@ -1175,7 +1175,7 @@ bool Player::AddBombingFleets(Bombing * bom, const Player* owner, const long bom
 					bom->AddTerraFleet(mFleets[i]);
 					added = true;
 				break;
-				
+
 			}
 		}
 	}
@@ -1327,11 +1327,11 @@ long Player::CreateFromFile(const char * file)
 
 	// tech and LRT dependant
 	const Component * comp;
-	comp = TheGame->GetBestComp(this, "PlanetScanSpace", false);
+	comp = TheGame->GetBestComp(this, "PlanetScanSpace", false, HC_ALL);
 	mScanSpace = comp == NULL ? 0 : comp->GetScanSpace();
-	comp = TheGame->GetBestComp(this, "PlanetScanPen", false);
+	comp = TheGame->GetBestComp(this, "PlanetScanPen", false, HC_ALL);
 	mScanPenetrating = comp == NULL ? 0 : comp->GetScanPenetrating();
-	comp = TheGame->GetBestComp(this, "DefensePower", false);
+	comp = TheGame->GetBestComp(this, "DefensePower", false, HC_ALL);
 	mDefenseValue = comp == NULL ? 0 : comp->GetDefensePower();
 	for (i = 0; i < Rules::MaxHabType; ++i)
 		mTerraLimit[i] = TheGame->GetTerraLimit(this, i);
@@ -1661,7 +1661,7 @@ bool Player::UndoOrder(int pos/*= -1*/)
 		delete mOrders[pos];
 		mOrders.erase(mOrders.begin() + pos);
 	}
-	
+
 	return true;
 }
 
