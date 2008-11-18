@@ -92,11 +92,11 @@ void Ship::ResetDefaults()
 	CVScanPenetrating = -2;
 	CVStealShip = -1;
 	CVStealPlanet = -1;
-	
+
 	CVRating = -1;
 	CVShoot = -1;
 	CVNormalBomb = CVSmartBomb = CVTerraBomb = -1;
-	
+
 	CCalcNormalKillPercentage = false;
 	CVKillMin = CVKillInstallation = -1;
 
@@ -217,11 +217,19 @@ void Ship::WriteNode(TiXmlNode * node, bool Host, bool Owner, bool SeeDesign) co
 
 bool Ship::IsValidDesign() const						// is this design valid (no weapons in the engine slot...)
 {
-	if (mHull->GetType() != CT_HULL && mHull->GetType() != CT_BASE)
-		return false;
+	Message * mess;
 
-	if (mSlots.size() > mHull->GetNumberSlots())
+	if (mHull->GetType() != CT_HULL && mHull->GetType() != CT_BASE) {
+		mess = TheGame->AddMessage("Error: Invalid hull type for ship design");
+		mess->AddLong(mName.c_str(), mHull->GetType());
 		return false;
+	}
+
+	if (mSlots.size() > mHull->GetNumberSlots()) {
+		mess = TheGame->AddMessage("Error: Invalid number of slots for ship design");
+		mess->AddLong(mName.c_str(), mSlots.size());
+		return false;
+	}
 
 	unsigned int i;
 	bool ValidEngine = mHull->GetType() == CT_BASE;
@@ -231,18 +239,39 @@ bool Ship::IsValidDesign() const						// is this design valid (no weapons in the
 			continue;
 
 		// too many things
-		if (mSlots[i].GetCount() > mHull->GetSlot(i).GetCount())
+		if (mSlots[i].GetCount() > mHull->GetSlot(i).GetCount()) {
+			mess = TheGame->AddMessage("Error: Too many things in slot for ship design");
+			mess->AddItem("Design name", mName.c_str());
+			mess->AddLong("Slot number", i);
+			mess->AddLong("Number of elements", mSlots[i].GetCount());
+			mess->AddLong("Maximum number of elements", mHull->GetSlot(i).GetCount());
 			return false;
+		}
+
+		if (!mSlots[i].GetComp()) {
+			mess = TheGame->AddMessage("Error: wrong design : no component type defined in slot");
+			mess->AddItem("Design name", mName.c_str());
+			mess->AddLong("Slot number", i);
+			return false;
+		}
 
 		// is this type of component allowed in this slot?
-		if (!mHull->GetSlot(i).IsAllowed(mSlots[i].GetComp()->GetType()))
+		if (!mHull->GetSlot(i).IsAllowed(mSlots[i].GetComp()->GetType())) {
+			mess = TheGame->AddMessage("Error: wrong design : illegal component in slot");
+			mess->AddItem("Design name", mName.c_str());
+			mess->AddLong("Slot number", i);
+			mess->AddLong("Illegal component type", mSlots[i].GetComp()->GetType());
 			return false;
+		}
 
-		if (!mSlots[i].GetComp())
+		if (!(mSlots[i].GetComp()->GetHullType() & mHull->GetHullType())) {
+			mess = TheGame->AddMessage("Error: wrong design : component not allowed on this type of hull");
+			mess->AddItem("Design name", mName.c_str());
+			mess->AddLong("Slot number", i);
+			mess->AddItem("Component name", mSlots[i].GetComp()->GetName());
+			mess->AddItem("Hull name", mHull->GetName());
 			return false;
-
-		if (!(mSlots[i].GetComp()->GetHullType() & mHull->GetHullType()))
-			return false;
+		}
 
 		if (!ValidEngine && mHull->GetSlot(i).IsAllowed(CT_ENGINE) && mSlots[i].GetCount() == mHull->GetSlot(i).GetCount())
 			ValidEngine = true;
