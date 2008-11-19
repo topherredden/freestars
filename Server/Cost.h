@@ -51,6 +51,7 @@ public:
 	long GetCrew() const { return mCrew; }
 	void SetResources(unsigned long r) { mResources = r; }
 	void SetCrew(unsigned long c) { mCrew = c; }
+	bool IsZero();
 	void Zero();
 	long & operator [](CargoType ct);
 	long operator [](CargoType ct) const;
@@ -58,7 +59,7 @@ public:
 	Cost & operator *= (double factor);
 	Cost & operator += (const Cost & c);
 	Cost & operator -= (const Cost & c);
-	friend bool operator == (const Cost & a, const Cost & c); 
+	friend bool operator == (const Cost & a, const Cost & c);
 	friend Cost operator *(const Cost & c, double factor)	{ Cost r(c); r *= factor; return r; }
 	friend Cost operator +(const Cost & a, const Cost & b)	{ Cost r(a); r += b; return r; }
 	friend Cost operator -(const Cost & a, const Cost & b)	{ Cost r(a); r -= b; return r; }
