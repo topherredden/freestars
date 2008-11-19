@@ -80,6 +80,8 @@ TurnFile
 		AutoMinTerra
 		AutoMaxTerra
 		AutoPacket
+	SetPayTax
+		Planet
 		PayTax
 	PacketDestination
 	PacketSpeed
