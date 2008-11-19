@@ -962,6 +962,7 @@ bool Fleet::Move()
  */
 void Fleet::MoveArrive()
 {
+
 	mHasMoved = true;
 	if (mOrders.size() <= 1) {
 		assert(false);
@@ -969,8 +970,10 @@ void Fleet::MoveArrive()
 	}
 
 	WayOrder * wo = mOrders[1];
-	if (!IsWith(*wo->GetLocation()))
+	if (!IsWith(*wo->GetLocation())) {
+		TheGame->MoveAlsoHere(this);
 		return;	// could happen if movement stopped for some reason (mine hits), or didn't reach destination
+	}
 
 	if (mRepeatOrders) {
 		WayOrder * wonew = new WayOrder(*wo);
