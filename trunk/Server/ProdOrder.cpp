@@ -226,17 +226,16 @@ void ProdOrder::CheckPartials(Planet * planet, const TiXmlNode * node, bool Trus
 			{
 				break; // have a match
 			}
-			
 				/*
 			// Check Resources
 			if (Partial[RESOURCES] != (*iter)->Partial[RESOURCES])
 				continue;	// not equal stop now
-			
+
 			// Check Crew
 			if (Partial[POPULATION] != (*iter)->Partial[POPULATION])
 				continue;	// not equal stop now
 
-			
+
 			// Check Minerals
 			for (int i = 0; i < Rules::MaxMinType; ++i)
 			{
@@ -244,7 +243,7 @@ void ProdOrder::CheckPartials(Planet * planet, const TiXmlNode * node, bool Trus
 					continue; // not equal stop now
 			}
 
-			
+
 			if (i > Rules::MaxMinType)
 			// if we didn't find a problem, this is a match
 			break;*/
@@ -252,11 +251,13 @@ void ProdOrder::CheckPartials(Planet * planet, const TiXmlNode * node, bool Trus
 	}
 
 	if (iter == planet->mProductionQ.end()) {
-		// if we don't have a match, use no partial production
-		Message * mess = planet->NCGetOwner()->AddMessage("Warning: Incorrect partial values", planet);
-		mess->AddItem("Item being built", TypeToString());
-		mess->AddLong("Number ordered", Amount);
-		Partial.Zero();
+		if (!Partial.IsZero()) {
+			// if we don't have a match, use no partial production
+			Message * mess = planet->NCGetOwner()->AddMessage("Warning: Incorrect partial values", planet);
+			mess->AddItem("Item being built", TypeToString());
+			mess->AddLong("Number ordered", Amount);
+			Partial.Zero();
+		}
 	} else {
 		// zero remembered partial, so it cannot be duplicated
 		(*iter)->Partial.Zero();
@@ -553,7 +554,6 @@ bool POAuto::Produce(Planet * planet, long * resources, bool * AutoAlchemy)
 		Message * mess = planet->NCGetOwner()->AddMessage("Error: Invalid Production type", planet);
 		mess->AddLong("Auto", Type);
 		return true;	// delete invalid items
-		
 	}
 
 	return false;	// auto itmes never get deleted fromt the queue

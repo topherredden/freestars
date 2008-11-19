@@ -44,6 +44,14 @@ Cost::Cost(const Cost & c) :
 	mMinerals.insert(mMinerals.begin(), c.mMinerals.begin(), c.mMinerals.end());
 }
 
+bool Cost::IsZero()
+{
+	bool Result = mResources == 0 && mCrew == 0;
+	for (CargoType ct = 0; ct < Rules::MaxMinType; ++ct)
+		Result = Result && mMinerals[ct] == 0;
+	return Result;
+}
+
 void Cost::Zero()
 {
 	mResources = 0;
