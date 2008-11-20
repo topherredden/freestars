@@ -200,6 +200,17 @@ TiXmlNode * Fleet::WriteNode(TiXmlNode * node, const Player * viewer) const
 		AddBool(node, "Repeat", mRepeatOrders);
 		for (int i = 0; i < mOrders.size(); ++i)
 			mOrders[i]->WriteNode(node);
+	} else {
+		// For enemy fleets, write the destination and speed of first waypoint
+		// if in space.
+		if (mOrders.size() > 1 && dynamic_cast<Planet *>(mAlsoHere->at(0)) == NULL) {
+			Location * loc = mOrders[0]->NCGetLocation();
+			WayOrder wonew = WayOrder(mOrders[0]->NCGetLocation(), false);
+			wonew.WriteNode(node);
+			wonew.SetLocation(mOrders[1]->NCGetLocation(), false);
+			wonew.SetSpeed(mOrders[1]->GetSpeed());
+			wonew.WriteNode(node);
+		}
 	}
 	if (viewer == NULL)
 		node->LinkEndChild(Rules::WriteArrayBool("CanLoadBy", "Race", "Number", mCanLoadBy));
