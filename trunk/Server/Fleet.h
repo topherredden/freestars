@@ -207,7 +207,7 @@ public:
 
 	void SetSeenDesign(long p, bool seen, bool design);
 	virtual void ResetSeen();
-	virtual void SetSeenBy(long p, bool seen);
+	virtual void SetSeenBy(long p, long seen);
 	virtual void SetCanLoadBy(const Player * player);
 	virtual bool CanLoadBy(const Player * player) const;
 	bool HasHull(HullType ht) const;
@@ -255,7 +255,7 @@ public:
 	bool GetInBattle() const	{ return mInBattle; }
 	long GetShipCount() const;
 	bool KillShips(long i, long count, bool salvage);
-	
+
 	double GetNormalKillPercentage() const;
 	//long GetSmartKillPercentage() const;
 	long GetKillMin() const;
@@ -332,7 +332,7 @@ private:
 	long CVNormalBomb;
 	long CVSmartBomb;
 	long CVTerraBomb;
-	
+
 	double CVNormalKillPercentage;
 	bool CCalcNormalKillPercentage;
 	//long CVSmartKillPercentage;

@@ -1377,11 +1377,11 @@ void Fleet::ResetSeen()
 	mCanLoadBy.insert(mCanLoadBy.begin(), TheGame->NumberPlayers(), false);
 }
 
-void Fleet::SetSeenBy(long p, bool seen)
+void Fleet::SetSeenBy(long p, long seen)
 {
 	mSeenBy[p] = seen;
 
-	SetSeenDesign(p, seen, TheGame->GetPlayer(p+1)->ScanDesign());
+	SetSeenDesign(p, seen != 0, TheGame->GetPlayer(p+1)->ScanDesign());
 }
 
 void Fleet::SetSeenDesign(long p, bool seen, bool design)
